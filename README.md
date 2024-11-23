@@ -1,2 +1,2 @@
-# COMP-229-BACKEND-PROJECT-3
- This is the backend of project project-3
+# COMP229.2024.Backend
+ COMP229 Class Examples
