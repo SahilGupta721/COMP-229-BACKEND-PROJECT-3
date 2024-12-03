@@ -1,7 +1,5 @@
 let config = require('./config');
-
-// Database setup
-const mongoose = require('mongoose');
+let mongoose = require('mongoose');
 
 module.exports = function(){
 
@@ -11,6 +9,6 @@ module.exports = function(){
 
     mongodb.on('error', console.error.bind(console, 'Connection Error: '));
     mongodb.once('open', ()=>{
-        console.log("====> Connected to MongoDB.");
+        console.log('====> Connected to MongoDB');
     })
 }

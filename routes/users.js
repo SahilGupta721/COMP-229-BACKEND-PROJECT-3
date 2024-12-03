@@ -6,14 +6,14 @@ let authController = require('../controllers/auth');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.send('Hello , this is from the users.');
 });
 
 router.post('/signin', authController.signin);
 router.get('/list', usersController.list);
 router.post('/create', usersController.create);
-router.get('/get/:userID', usersController.userGet, usersController.userByID);
-router.put('/edit/:userID', authController.signin,usersController.update);
-router.delete('/delete/:userID', usersController.remove);
+router.get('/get/:userId', usersController.getUser, usersController.sendById);
+router.put('/edit/:userId', usersController.update);
+router.delete('/delete/:userId', usersController.remove);
 
 module.exports = router;

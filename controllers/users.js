@@ -1,101 +1,83 @@
 let UserModel = require('../models/users');
 
-module.exports.create = async function (req, res, next) {
-    try {
-        console.log(req.body);
-        let newUser = new UserModel(req.body);
-
-        let result = await UserModel.create(newUser);
-        res.json(
-            {
-                success: true,
-                message: 'User created successfully.'
-            }
-        )
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-}
-
 module.exports.list = async function (req, res, next) {
     try {
         let list = await UserModel.find({}, '-password');
-
-        res.json(list);
+        res.json({ list })
     } catch (error) {
         console.log(error);
         next(error);
     }
-}
+}; 
 
-module.exports.userGet = async function (req, res, next) {
+module.exports.create = async function (req, res, next) {
     try {
-        let uID = req.params.userID;
-
-        let user = await UserModel.findOne({ _id: uID }, '-hashed_password -salt');
-        console.log(user);
-        req.user = user;
-        next();
-
+        let newUser = new UserModel(req.body);
+        let result = await UserModel.create(newUser);
+        res.json({
+            success: true,
+            message: 'User registered succesfully'
+        })
+        console.log(result)
     } catch (error) {
         console.log(error);
         next(error);
     }
+};
 
-}
+module.exports.getUser = async function (req, res, next) {
+    try {
 
-module.exports.userByID = async function (req, res, next) {
+        let uId = req.params.userId;
+        req.user = await UserModel.findOne({ _id: uId }, '-password');
+        next();
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+
+module.exports.sendById = async function (req, res, next) {
     res.json(req.user);
-}
+};
 
 module.exports.update = async function (req, res, next) {
     try {
-        let uID = req.params.userID;
-
+        let uId = req.params.userId;
         let updateUser = new UserModel(req.body);
-        updateUser._id = uID;
+        updateUser._id = uId;
 
-        let result = await UserModel.updateOne({ _id: uID }, updateUser);
-        console.log(result);
-
+        let result = await UserModel.updateOne({ _id: uId }, updateUser);
         if (result.modifiedCount > 0) {
-            res.json(
-                {
-                    success: true,
-                    message: 'User updated successfully.'
-                }
-            );
+            res.json({
+                success: true,
+                message: 'User updated succesfully'
+            })
         } else {
-            // Express will catch this on its own.
-            throw new Error('User not updated. Are you sure it exists?')
+            throw new Error('User not updated. Are you sure it exist?')
         }
     } catch (error) {
         console.log(error);
         next(error);
     }
-}
+};
+
 
 module.exports.remove = async function (req, res, next) {
     try {
-        let uID = req.params.userID;
-
-        let result = await UserModel.deleteOne({ _id: uID });
-        console.log(result);
-
+        let uId = req.params.userId;
+        
+        let result = await UserModel.deleteOne({ _id: uId });
         if (result.deletedCount > 0) {
-            res.json(
-                {
-                    success: true,
-                    message: 'User deleted successfully.'
-                }
-            );
+            res.json({
+                success: true,
+                message: 'User deleted succesfully'
+            })
         } else {
-            // Express will catch this on its own.
-            throw new Error('User not deleted. Are you sure it exists?')
+            throw new Error('User not deleted. Are you sure it exixts?')
         }
     } catch (error) {
         console.log(error);
         next(error);
     }
-}
+};
